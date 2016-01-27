@@ -22,5 +22,18 @@ public class Position {
 	public int hashCode() {
 		return (this.x * 2963)^(this.y * 2969);
 	}
+	
+	public Position changePositionInDirection(Orientation orientation) {
+		Position newPos = new Position(this.x, this.y);
+		if(orientation == orientation.NORTH)
+			newPos.y++;
+		else if(orientation == orientation.EAST)
+			newPos.x++;
+		else if(orientation == orientation.SOUTH)
+			newPos.y--;
+		else if(orientation == orientation.WEST)
+			newPos.x++;
+		return newPos;
+	}
 
 }
