@@ -1,6 +1,7 @@
 import java.util.Collection;
 
 public class RationalAgent implements Agent {
+	private SearchAlgorithm search;
 
 	@Override
 	public void init(Collection<String> percepts) {
