@@ -1,3 +1,5 @@
+import java.util.Collection;
+
 public class State {
 	public Orientation orientation;
 	public Position position;
@@ -30,5 +32,17 @@ public class State {
 		else if(orientation == Orientation.WEST) hash *= 109;
 		hash *= turned_on == true ? 7121 : 1;
 		return hash;
+	}
+	
+	public boolean isGoal() {
+		return false;
+	}
+	
+	public Collection<String> legalActions() {
+		return null;
+	}
+	
+	public State nextState(String action) {
+		return null;
 	}
 }
