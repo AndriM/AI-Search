@@ -3,13 +3,12 @@ import java.util.Collection;
 public class Node {
 	
 	private State state;
-	private Collection<State> childStates;
-	private State parentState;
+	private Node parentNode;
 	private String action;
 	
 	public Node(State state, State parentState, String action) {
 		this.state = state;
-		this.parentState = parentState;
+		this.parentNode = parentNode;
 		this.action = action;
 	}
 	
