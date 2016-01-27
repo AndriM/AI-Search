@@ -1,14 +1,18 @@
 import java.util.Collection;
 
 public class State {
-	public Orientation orientation;
-	public Position position;
-	public boolean turned_on;
+	private Orientation orientation;
+	private Position position;
+	private boolean turned_on;
+	private Collection<Position> dirt;
+	private World world;
 
-	public State(Position position, Orientation orientation, boolean turned_on) {
+	public State(Position position, Orientation orientation, boolean turned_on, Collection<Position> dirt, World world) {
 		this.position = position;
 		this.orientation = orientation;
 		this.turned_on = turned_on;
+		this.world = world;
+		this.dirt = dirt;
 	}
 
 	public String toString() {
@@ -35,7 +39,7 @@ public class State {
 	}
 	
 	public boolean isGoal() {
-		return false;
+		return (!turned_on && position.equals(world.homePosition) && dirt.isEmpty());
 	}
 	
 	public Collection<String> legalActions() {
