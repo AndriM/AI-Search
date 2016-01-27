@@ -25,13 +25,13 @@ public class Position {
 	
 	public Position changePositionInDirection(Orientation orientation) {
 		Position newPos = new Position(this.x, this.y);
-		if(orientation == orientation.NORTH)
+		if(orientation == Orientation.NORTH)
 			newPos.y++;
-		else if(orientation == orientation.EAST)
+		else if(orientation == Orientation.EAST)
 			newPos.x++;
-		else if(orientation == orientation.SOUTH)
+		else if(orientation == Orientation.SOUTH)
 			newPos.y--;
-		else if(orientation == orientation.WEST)
+		else if(orientation == Orientation.WEST)
 			newPos.x++;
 		return newPos;
 	}
