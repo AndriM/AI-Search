@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class State {
 	private Orientation orientation;
@@ -13,6 +15,14 @@ public class State {
 		this.turned_on = turned_on;
 		this.world = world;
 		this.dirt = dirt;
+	}
+	
+	public State(State s) {
+		this.orientation = s.orientation;
+		this.position = s.position;
+		this.turned_on = s.turned_on;
+		this.dirt = s.dirt;
+		this.world = s.world;
 	}
 
 	public String toString() {
@@ -47,6 +57,29 @@ public class State {
 	}
 	
 	public State nextState(String action) {
-		return null;
+		State newState = new State(this);
+		if(action.equals("GO"))
+			newState.position = newState.position.changePositionInDirection(orientation);
+		else if(action.equals("TURN_LEFT"))
+			newState.orientation = newState.orientation.left();
+		else if(action.equals("TURN_RIGHT"))
+			newState.orientation = newState.orientation.right();
+		else if(action.equals("SUCK"))
+			newState.dirt = getNextStateDirt();
+		else if(action.equals("TURN_ON"))
+			newState.turned_on = true;
+		else if(action.equals("TURN_OFF"))
+			newState.turned_on = false;
+		
+		return newState;
+	}
+	
+	private Collection<Position> getNextStateDirt() {
+		List<Position> newDirt = new ArrayList<>();
+		for(Position dirt : this.dirt) {
+			if(!this.position.equals(dirt))
+				newDirt.add(dirt);
+		}
+		return newDirt;
 	}
 }
