@@ -12,7 +12,7 @@ public class Node {
 		this.action = action;
 	}
 	
-	Collection<String> getActions() {
+	Collection<String> getActionSequence() {
 		//TODO: Recursive method to gather all the actions from current node to root
 		return null;
 	}
