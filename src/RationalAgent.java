@@ -4,7 +4,6 @@ public class RationalAgent implements Agent {
 
 	@Override
 	public void init(Collection<String> percepts) {
-		// TODO Auto-generated method stub
 		
 	}
 
