@@ -53,7 +53,22 @@ public class State {
 	}
 	
 	public Collection<String> legalActions() {
-		return null;
+		List<String> actions = new ArrayList<>();
+		if(!this.turned_on)
+			actions.add("TURN_ON");
+		else if(this.turned_on && this.position.equals(world.homePosition) && this.dirt.isEmpty())
+			actions.add("TURN_OFF");
+		else if(dirt.contains(this.position))
+			actions.add("SUCK");
+		else {
+			if(!world.isPositionObstacle(position.changePositionInDirection(orientation)))
+				actions.add("GO");
+			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.left())))
+				actions.add("TURN_LEFT");
+			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.right())))
+				actions.add("TURN_RIGHT");
+		}
+		return actions;
 	}
 	
 	public State nextState(String action) {
