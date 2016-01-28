@@ -1,10 +1,15 @@
+import java.util.HashMap;
 
 public class World {
 	public final Position homePosition;
-	public final Position obstacles;
+	public final HashMap<Position, Position> obstacles;
 	
-	public World(Position homePosition, Position obstacles) {
+	public World(Position homePosition, HashMap<Position, Position> obstacles) {
 		this.homePosition = homePosition;
 		this.obstacles = obstacles;
+	}
+	
+	public boolean isPositionObstacle(Position pos) {
+		return obstacles.containsValue(pos);
 	}
 }
