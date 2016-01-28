@@ -11,13 +11,6 @@ public class BreadthFirstSearch implements SearchAlgorithm {
 	
 	@Override
 	public Stack<String> getActionSequence(State initState, State goalState) {
-		this.root = new Node(initState, null, null);
-		this.goal = goalState;
-		explored = new HashMap<>();
-		frontier = new LinkedList<>();
-		Stack<String> tempStackForReturn = new Stack<>();
-		tempStackForReturn.push("TURN_ON");
-		tempStackForReturn.push("TURN_OFF");
-		return tempStackForReturn;
+		return null;
 	}
 }
