@@ -1,9 +1,9 @@
-import java.util.Collection;
+import java.util.Stack;
 
 public class UniformCostSearch implements SearchAlgorithm {
 
 	@Override
-	public Collection<String> getActionSequence(State initState, State goalState) {
+	public Stack<String> getActionSequence(State initState, State goalState) {
 		// TODO Auto-generated method stub
 		return null;
 	}

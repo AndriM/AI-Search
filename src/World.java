@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class World {
 	public final Position homePosition;
-	public final HashMap<Position, Position> obstacles;
+	private final HashMap<Position, Position> obstacles;
 	
 	public World(Position homePosition, HashMap<Position, Position> obstacles) {
 		this.homePosition = homePosition;
@@ -10,6 +10,6 @@ public class World {
 	}
 	
 	public boolean isPositionObstacle(Position pos) {
-		return obstacles.containsValue(pos);
+		return obstacles.containsKey(pos);
 	}
 }

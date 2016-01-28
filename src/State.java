@@ -39,6 +39,7 @@ public class State {
 	
 	@Override
 	public int hashCode() {
+		//TODO: hashCode needs improvement!
 		int hash = position.hashCode();
 		if(orientation == Orientation.NORTH) hash *=  9907;
 		else if(orientation == Orientation.EAST) hash *= 5189;

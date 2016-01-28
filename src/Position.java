@@ -35,5 +35,4 @@ public class Position {
 			newPos.x++;
 		return newPos;
 	}
-
 }

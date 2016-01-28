@@ -1,5 +1,5 @@
-import java.util.Collection;
+import java.util.Stack;
 
 public interface SearchAlgorithm {
-	Collection<String> getActionSequence(State initState, State goalState);
+	Stack<String> getActionSequence(State initState, State goalState);
 }
