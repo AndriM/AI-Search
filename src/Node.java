@@ -1,19 +1,27 @@
-import java.util.Collection;
+import java.util.Stack;
 
 public class Node {
 	
-	private State state;
+	public final State state;
 	private Node parentNode;
 	private String action;
 	
-	public Node(State state, State parentState, String action) {
+	public Node(State state, Node parentNode, String action) {
 		this.state = state;
 		this.parentNode = parentNode;
 		this.action = action;
 	}
 	
-	Collection<String> getActionSequence() {
-		//TODO: Recursive method to gather all the actions from current node to root
-		return null;
+	public Stack<String> getSolution() {
+		Stack<String> actionStack = new Stack<>();
+		return getSolutionHelper(this, actionStack);
+	}
+	
+	private Stack<String> getSolutionHelper(Node node, Stack<String> actionStack) {
+		if(node.action != null){
+			actionStack.add(node.action);
+			actionStack = getSolutionHelper(node.parentNode, actionStack);
+		}
+		return actionStack;
 	}
 }

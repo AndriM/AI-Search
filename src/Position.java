@@ -32,7 +32,7 @@ public class Position {
 		else if(orientation == Orientation.SOUTH)
 			newPos.y--;
 		else if(orientation == Orientation.WEST)
-			newPos.x++;
+			newPos.x--;
 		return newPos;
 	}
 }

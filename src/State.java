@@ -34,7 +34,9 @@ public class State {
 		if(!(obj instanceof State)) return false;
 		State state = (State) obj;
 		return this.position.equals(state.position)
-				&& this.orientation.equals(state.orientation) && this.turned_on == state.turned_on;
+				&& this.orientation.equals(state.orientation) && this.turned_on == state.turned_on
+				&& this.dirt.equals(state.dirt)
+				&& this.world == state.world;
 	}
 	
 	@Override
@@ -59,15 +61,13 @@ public class State {
 			actions.add("TURN_ON");
 		else if(this.turned_on && this.position.equals(world.homePosition) && this.dirt.isEmpty())
 			actions.add("TURN_OFF");
-		else if(dirt.contains(this.position))
+		else if(this.dirt.contains(this.position))
 			actions.add("SUCK");
 		else {
-			if(!world.isPositionObstacle(position.changePositionInDirection(orientation)))
+			if(!this.world.isPositionObstacle(this.position.changePositionInDirection(this.orientation)))
 				actions.add("GO");
-			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.left())))
-				actions.add("TURN_LEFT");
-			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.right())))
-				actions.add("TURN_RIGHT");
+			actions.add("TURN_LEFT");
+			actions.add("TURN_RIGHT");
 		}
 		return actions;
 	}
