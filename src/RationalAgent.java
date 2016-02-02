@@ -65,8 +65,8 @@ public class RationalAgent implements Agent {
 		
 		world = new World(homePosition, obstacles);
 		State initial = new State(homePosition, orientation, false, dirt, world);
-		actionStack = search.getActionSequence(initial);
 		printWorld(world, dirt, homePosition, x, y);
+		actionStack = search.getActionSequence(initial);
 		System.out.println(actionStack);
 	}
 
@@ -103,27 +103,27 @@ public class RationalAgent implements Agent {
 		return null;
 	}
 	
-	private void printWorld(World world, List<Position> dirt, Position homePos, int x, int y) {
-		char map[][] = new char[y + 2][x + 2];
-		for(int i = 0; i < map.length; i++) {
-			for(int j = 0; j < map[i].length; j++) {
-				Position curr = new Position(j, i);
-				if(world.isPositionObstacle(curr))
-					map[j][i] = 'X';
+	private void printWorld(World world, List<Position> dirt, Position homePos, int width, int length) {
+		char map[][] = new char[length + 2][width + 2];
+		
+		for(int y = 0; y < map.length; y++) {
+			for(int x = 0; x < map[y].length; x++) {
+				Position currPos = new Position(x, y);
+				if(world.isPositionObstacle(currPos))
+					map[currPos.y][currPos.x] = 'X';
 				else
-					map[j][i] = ' ';
+					map[currPos.y][currPos.x] = ' ';
 			}
 		}
 		
-		for( Position d : dirt)
-			map[d.y][d.x] = 'D';
-		
 		map[homePos.y][homePos.x] = 'H';
 		
-		for(int i = 0; i < map.length; i++) {
-			for(int j = 0; j < map[i].length; j++) {
-				System.out.print(map[j][i]);
-			}
+		for(Position d : dirt)
+			map[d.y][d.x] = 'D';
+		
+		for(int y = map.length - 1; y >= 0; y--) {
+			for(int x = map[y].length - 1; x >= 0; x--)
+				System.out.print(map[y][x]);
 			System.out.println();
 		}
 	}
