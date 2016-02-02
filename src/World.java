@@ -14,10 +14,10 @@ public class World {
 	}
 	
 	public boolean isPositionObstacle(Position pos) {
-		return obstacles.containsKey(pos);
+		return !isPositionInWorld(pos) || obstacles.containsKey(pos);
 	}
 	
-	public boolean isPositionInWorld(Position pos) {
+	private boolean isPositionInWorld(Position pos) {
 		return pos.x > 0 && pos.x <= this.xMax && pos.y > 0 && pos.y <= this.yMax;  
 	}
 }

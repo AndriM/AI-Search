@@ -64,7 +64,7 @@ public class State {
 		else if(dirt.contains(position))
 			actions.add("SUCK");
 		else {
-			if(world.isPositionInWorld(position) && !world.isPositionObstacle(position.changePositionInDirection(orientation)))
+			if(!world.isPositionObstacle(position.changePositionInDirection(orientation)))
 				actions.add("GO");
 			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.left()))
 				||  world.isPositionObstacle(position.changePositionInDirection(orientation.right())))
