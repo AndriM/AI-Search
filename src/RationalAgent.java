@@ -46,7 +46,6 @@ public class RationalAgent implements Agent {
 				else if(perceptName.equals("SIZE")) {
 					Matcher m = Pattern.compile("\\(\\s*SIZE\\s+([0-9]+)\\s+([0-9]+)\\s*\\)").matcher(percept);
 					if(m.matches()) {
-						addWallsToObstacles(obstacles, Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
 						x = Integer.parseInt(m.group(1));
 						y = Integer.parseInt(m.group(2));
 					}
@@ -63,32 +62,18 @@ public class RationalAgent implements Agent {
 				System.err.println("strange percept that does not match pattern: " + percept);
 		}
 		
-		world = new World(homePosition, obstacles);
+		world = new World(homePosition, obstacles, x, y);
 		State initial = new State(homePosition, orientation, false, dirt, world);
-		printWorld(world, dirt, homePosition, x, y);
+		printWorld(world, dirt, homePosition);
 		actionStack = search.getActionSequence(initial);
 		System.out.println(actionStack);
 	}
 
 	@Override
 	public String nextAction(Collection<String> percepts) {
-		return actionStack.pop();
-	}
-	
-	private void addWallsToObstacles(HashMap<Position, Position> obstacles, int x, int y) {
-		for(int i = 1; i <= x; i++) {
-			Position upperWallCell = new Position(i, 0);
-			Position lowerWallCell = new Position(i, y + 1);
-			obstacles.put(upperWallCell, upperWallCell);
-			obstacles.put(lowerWallCell, lowerWallCell);
-		}
-		
-		for(int i = 1; i <= y; i++) {
-			Position leftWallCell = new Position(0, i);
-			Position rightWallCell = new Position(x + 1, i);
-			obstacles.put(leftWallCell, leftWallCell);
-			obstacles.put(rightWallCell, rightWallCell);
-		}
+		if(actionStack != null && !actionStack.isEmpty())
+			return actionStack.pop();
+		return "TURN_OFF";
 	}
 	
 	private Orientation getOrientation(String stringOrientation) {
@@ -103,13 +88,13 @@ public class RationalAgent implements Agent {
 		return null;
 	}
 	
-	private void printWorld(World world, List<Position> dirt, Position homePos, int width, int length) {
-		char map[][] = new char[length + 2][width + 2];
+	private void printWorld(World world, List<Position> dirt, Position homePos) {
+		char map[][] = new char[world.yMax + 2][world.xMax + 2];
 		
 		for(int y = 0; y < map.length; y++) {
 			for(int x = 0; x < map[y].length; x++) {
 				Position currPos = new Position(x, y);
-				if(world.isPositionObstacle(currPos))
+				if(!world.isPositionInWorld(currPos) || world.isPositionObstacle(currPos))
 					map[currPos.y][currPos.x] = 'X';
 				else
 					map[currPos.y][currPos.x] = ' ';
@@ -118,8 +103,12 @@ public class RationalAgent implements Agent {
 		
 		map[homePos.y][homePos.x] = 'H';
 		
-		for(Position d : dirt)
-			map[d.y][d.x] = 'D';
+		for(Position d : dirt){
+			if(map[d.y][d.x] != 'X' && map[d.y][d.x] != 'H')
+				map[d.y][d.x] = 'D';
+			else
+				map[d.y][d.x] = 'F';
+		}
 		
 		for(int y = map.length - 1; y >= 0; y--) {
 			for(int x = map[y].length - 1; x >= 0; x--)

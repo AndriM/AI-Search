@@ -57,17 +57,21 @@ public class State {
 	
 	public Collection<String> legalActions() {
 		List<String> actions = new ArrayList<>();
-		if(!this.turned_on)
+		if(!turned_on)
 			actions.add("TURN_ON");
-		else if(this.turned_on && this.position.equals(world.homePosition) && this.dirt.isEmpty())
+		else if(turned_on && position.equals(world.homePosition) && dirt.isEmpty())
 			actions.add("TURN_OFF");
-		else if(this.dirt.contains(this.position))
+		else if(dirt.contains(position))
 			actions.add("SUCK");
 		else {
-			if(!this.world.isPositionObstacle(this.position.changePositionInDirection(this.orientation)))
+			if(world.isPositionInWorld(position) && !world.isPositionObstacle(position.changePositionInDirection(orientation)))
 				actions.add("GO");
-			actions.add("TURN_LEFT");
-			actions.add("TURN_RIGHT");
+			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.left()))
+				||  world.isPositionObstacle(position.changePositionInDirection(orientation.right())))
+				actions.add("TURN_LEFT");
+			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.right()))
+					||  world.isPositionObstacle(position.changePositionInDirection(orientation.left())))
+				actions.add("TURN_RIGHT");
 		}
 		return actions;
 	}
