@@ -16,7 +16,7 @@ public class BreadthFirstSearch implements SearchAlgorithm {
 		if(root.state.isGoal()) return root.getSolution();
 		this.frontier.add(root);
 		while(true) {
-			if(frontier.isEmpty()) return getFailureStack();
+			if(frontier.isEmpty()) return failure();
 			Node currentNode = frontier.pop();
 			explored.put(currentNode.state, currentNode.state);
 			for(String action : currentNode.state.legalActions()) {
@@ -30,10 +30,8 @@ public class BreadthFirstSearch implements SearchAlgorithm {
 		}
 	}
 	
-	private Stack<String> getFailureStack() {
-		Stack<String> stack = new Stack<>();
-		stack.push("TURN_OFF");
-		stack.push("TURN_ON");
-		return stack;
+	private Stack<String> failure() {
+		System.out.println("No solution found!");
+		return null;
 	}
 }

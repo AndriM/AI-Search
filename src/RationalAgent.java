@@ -66,7 +66,7 @@ public class RationalAgent implements Agent {
 		State initial = new State(homePosition, orientation, false, dirt, world);
 		printWorld(world, dirt, homePosition);
 		actionStack = search.getActionSequence(initial);
-		System.out.println(actionStack);
+		System.out.println(actionStack.size());
 	}
 
 	@Override

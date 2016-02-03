@@ -48,6 +48,18 @@ public class State {
 		else if(orientation == Orientation.SOUTH) hash *= 127;
 		else if(orientation == Orientation.WEST) hash *= 109;
 		hash *= turned_on == true ? 7121 : 1;
+		
+		int i = 0;
+		for(Position d : dirt) {
+			if(i > 2) i = 0;
+			if(i == 0)
+			 hash *= d.hashCode();
+			else if(i == 1)
+				hash ^= d.hashCode();
+			else if(i == 2)
+				hash /= d.hashCode();
+		}
+		
 		return hash;
 	}
 	
@@ -64,13 +76,14 @@ public class State {
 		else if(dirt.contains(position))
 			actions.add("SUCK");
 		else {
-			if(!world.isPositionObstacle(position.changePositionInDirection(orientation)))
+			boolean isObstacleFront = world.isPositionObstacle(position.changePositionInDirection(orientation));
+			boolean isObstacleLeft = world.isPositionObstacle(position.changePositionInDirection(orientation.left()));
+			boolean isObstacleRight = world.isPositionObstacle(position.changePositionInDirection(orientation.right()));
+			if(!isObstacleFront)
 				actions.add("GO");
-			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.left()))
-				||  world.isPositionObstacle(position.changePositionInDirection(orientation.right())))
+			if(!isObstacleLeft || isObstacleRight)
 				actions.add("TURN_LEFT");
-			if(!world.isPositionObstacle(position.changePositionInDirection(orientation.right()))
-					||  world.isPositionObstacle(position.changePositionInDirection(orientation.left())))
+			if(!isObstacleRight || isObstacleLeft)
 				actions.add("TURN_RIGHT");
 		}
 		return actions;
