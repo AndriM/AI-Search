@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args){
 		try{
 			// TODO: put in your agent here
-			Agent agent = new RationalAgent(new BreadthFirstSearch());
+			Agent agent = new RationalAgent(new AStarSearch());
 
 			int port=4001;
 			if(args.length>=1){

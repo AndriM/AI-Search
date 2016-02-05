@@ -29,4 +29,12 @@ public class Node implements Comparable<Node> {
 	public int compareTo(Node arg0) {
 		return action.compareTo(arg0.action);
 	}
+	
+	@Override
+	public boolean equals(Object n) {
+		if (!(n instanceof Node))
+			return false;
+		Node node = (Node)n;
+		return this.state.equals(node.state);
+	}
 }

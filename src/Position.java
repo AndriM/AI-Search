@@ -35,4 +35,8 @@ public class Position {
 			newPos.x--;
 		return newPos;
 	}
+	
+	public int manhattanDistance(Position pos){
+		return Math.max(this.x, pos.x) - Math.min(this.x, pos.x) + Math.max(this.y, pos.y) - Math.min(this.y, pos.y);
+	}
 }

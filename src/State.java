@@ -3,11 +3,11 @@ import java.util.Collection;
 import java.util.List;
 
 public class State {
-	private Orientation orientation;
-	private Position position;
-	private boolean turned_on;
-	private Collection<Position> dirt;
-	private World world;
+	public Orientation orientation;
+	public Position position;
+	public boolean turned_on;
+	public Collection<Position> dirt;
+	public World world;
 
 	public State(Position position, Orientation orientation, boolean turned_on, Collection<Position> dirt, World world) {
 		this.position = position;
@@ -107,6 +107,10 @@ public class State {
 		return newState;
 	}
 	
+	public int getActionCost(String action) {
+		return 1; // Always one
+	}
+	
 	private Collection<Position> getNextStateDirt() {
 		List<Position> newDirt = new ArrayList<>();
 		for(Position dirt : this.dirt) {
@@ -114,5 +118,15 @@ public class State {
 				newDirt.add(dirt);
 		}
 		return newDirt;
+	}
+	
+	public Position[] getStateDirt() {
+		Position[] array = new Position[dirt.size()];
+		int i = 0;
+		for(Position d : dirt) {
+			array[i] = d;
+			i++;
+		}
+		return array;
 	}
 }

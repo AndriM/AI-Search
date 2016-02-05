@@ -4,17 +4,13 @@ import java.util.Stack;
 
 public class BreadthFirstSearch implements SearchAlgorithm {
 	
-	private Node root;
-	HashMap<State, State> explored;
-	LinkedList<Node> frontier;
-	
 	@Override
 	public Stack<String> getActionSequence(State initState) {
-		frontier = new LinkedList<>();
-		explored = new HashMap<>();
-		this.root = new Node(initState, null, null);
+		HashMap<State, State> explored = new HashMap<>();
+		LinkedList<Node> frontier = new LinkedList<>();
+		Node root = new Node(initState, null, null);
 		if(root.state.isGoal()) return root.getSolution();
-		this.frontier.add(root);
+		frontier.add(root);
 		int numberOfExpansions = 0;
 		int maximumSizeOfFrontier = 1;
 		while(true) {
