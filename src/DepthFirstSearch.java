@@ -15,7 +15,7 @@ public class DepthFirstSearch implements SearchAlgorithm {
 		if(root.state.isGoal()) return root.getSolution();
 		this.frontier.push(root);
 		while(true) {
-			if(frontier.isEmpty()) failure();
+			if(frontier.isEmpty()) return failure();
 			Node currentNode = frontier.pop();
 			explored.put(currentNode.state, currentNode.state);
 			for(String action : currentNode.state.legalActions()) {

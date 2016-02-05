@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class Node {
+public class Node implements Comparable<Node> {
 	
 	public final State state;
 	private Node parentNode;
@@ -23,5 +23,10 @@ public class Node {
 			actionStack = getSolutionHelper(node.parentNode, actionStack);
 		}
 		return actionStack;
+	}
+
+	@Override
+	public int compareTo(Node arg0) {
+		return action.compareTo(arg0.action);
 	}
 }
