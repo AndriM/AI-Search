@@ -24,17 +24,19 @@ public class AStarSearch implements SearchAlgorithm{
 			return 0;
 		}
 		
-		private int heuristic() {
+		private int heuristic2() {
 			int h = state.dirt.size() * state.getActionCost("SUCK");
+			h += !state.turned_on && !state.dirt.isEmpty() ? state.getActionCost("TURN_ON") : 0;
+			h += state.turned_on ? state.getActionCost("TURN_OFF") : 0;
 			Position[] dirts = this.state.getStateDirt();
 			Position currentPos = state.position;
 			int startIndex = 0;
 			int closestIndex = 0;
 			while(startIndex < dirts.length) {
 				Position closestDirt = dirts[startIndex];
-				int distance = currentPos.manhattanDistance(closestDirt);
+				int distance = currentPos.travelCost(closestDirt);
 				for(int i = startIndex + 1; i < dirts.length; i++) {
-					int newDistance = currentPos.manhattanDistance(dirts[i]);
+					int newDistance = currentPos.travelCost(dirts[i]);
 					if(newDistance < distance) {
 						distance = newDistance;
 						closestDirt = dirts[i];
@@ -47,41 +49,58 @@ public class AStarSearch implements SearchAlgorithm{
 				dirts[startIndex] = closestDirt;
 				startIndex++;
 			}
-			return h + currentPos.manhattanDistance(state.world.homePosition) * state.getActionCost("GO");
+			return h + currentPos.travelCost(state.world.homePosition) * state.getActionCost("GO");
 		}
-	}
-
-	@Override
-	public Stack<String> getActionSequence(State initState) {
-		HashMap<State, State> explored = new HashMap<>();
-		HashMap<State, AStarNode> isInFrontier = new HashMap<>();
-		PriorityQueue<AStarNode> frontier = new PriorityQueue<>();
-		AStarNode init = new AStarNode(initState, null, null);
-		frontier.add(init);
-		isInFrontier.put(init.state, init);
-		int numberOfExpansions = 0;
-		while(true) {
-			System.out.println("NE: " + numberOfExpansions + ", MF: " + frontier.size());
-			if(frontier.isEmpty()) return failure();
-			AStarNode node = frontier.poll();
-			if(node.state.isGoal()) return node.getSolution();
-			explored.put(node.state, node.state);
-			for(String action : node.state.legalActions()) {
-				AStarNode childNode = new AStarNode(node.state.nextState(action), node, action);
-				AStarNode oldNode = isInFrontier.get(childNode.state);
-				if(!explored.containsKey(childNode.state) && oldNode == null) {
-					frontier.add(childNode);
-					isInFrontier.put(childNode.state, childNode);
-				}
-				else if(oldNode != null) {
-					int cmp = childNode.compareTo(oldNode);
-					if(cmp < 0) {
-						frontier.remove(oldNode);
-						frontier.add(childNode);
+		
+		private int heuristic() {
+			int h = state.dirt.size() * state.getActionCost("SUCK");
+			h += !state.turned_on && !state.dirt.isEmpty() ? state.getActionCost("TURN_ON") : 0;
+			h += state.turned_on ? state.getActionCost("TURN_OFF") : 0;
+			Position[] dirts = this.state.getStateDirt();
+			Position currentPos = this.state.position;
+			if(dirts.length != 0) {
+				Position dirt = dirts[0];
+				int distance = this.state.position.travelCost(dirt);
+				for(int i = 1; i < dirts.length; i++) {
+					int newDistance = this.state.position.travelCost(dirts[i]);
+					if(newDistance > distance) {
+						distance = newDistance;
+						dirt = dirts[i];
 					}
 				}
+				currentPos = dirt;
+				h += distance * state.getActionCost("GO");
+			}
+			return h + currentPos.travelCost(this.state.world.homePosition);
+		}
+	}
+	
+	@Override
+	public Stack<String> getActionSequence(State initState) {
+		PriorityQueue<AStarNode> frontier = new PriorityQueue<>();
+		HashMap<State, AStarNode> explored = new HashMap<>();
+		AStarNode root = new AStarNode(initState, null, null);
+		frontier.add(root);
+		int maxFrontier = 0;
+		int numberOfExpansions = 0;
+		while(!frontier.isEmpty()){
+			numberOfExpansions++;
+			maxFrontier = frontier.size() > maxFrontier ? frontier.size() : maxFrontier;
+			AStarNode curr_node = frontier.poll();
+			State curr_state = curr_node.state;
+			if(curr_node.state.isGoal()){
+				System.out.println("Number of Expansions: " + numberOfExpansions + ", Max Frontier: " + maxFrontier);
+				return curr_node.getSolution();
+			}
+			if(explored.containsKey(curr_state))
+				continue;
+			explored.put(curr_state, curr_node);
+			for(String action : curr_node.state.legalActions()) {
+					AStarNode childNode = new AStarNode(curr_node.state.nextState(action), curr_node, action);
+					frontier.add(childNode);
 			}
 		}
+		return failure();
 	}
 	
 	private Stack<String> failure() {

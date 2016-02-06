@@ -36,19 +36,19 @@ public class UniformCostSearch implements SearchAlgorithm {
 		HashMap<State, UniNode> explored = new HashMap<>();
 		UniNode root = new UniNode(initState, null, null);
 		frontier.add(root);
+		int maxFrontier = 0;
+		int numberOfExpansions = 0;
 		while(!frontier.isEmpty()){
+			numberOfExpansions++;
+			maxFrontier = frontier.size() > maxFrontier ? frontier.size() : maxFrontier;
 			UniNode curr_node = frontier.poll();
 			State curr_state = curr_node.state;
 			if(curr_node.state.isGoal()){
+				System.out.println("Number of Expansions: " + numberOfExpansions + ", Max Frontier: " + maxFrontier);
 				return curr_node.getSolution();
 			}
-			if(explored.containsKey(curr_state)) {
-				UniNode explored_node = explored.get(curr_state);
-				int cmp = curr_node.compareTo(explored_node);
-				if (cmp >= 0) {
-					continue;
-				}
-			}
+			if(explored.containsKey(curr_state))
+				continue;
 			explored.put(curr_state, curr_node);
 			for(String action : curr_node.state.legalActions()) {
 					UniNode childNode = new UniNode(curr_node.state.nextState(action), curr_node, action);

@@ -36,7 +36,8 @@ public class Position {
 		return newPos;
 	}
 	
-	public int manhattanDistance(Position pos){
-		return Math.max(this.x, pos.x) - Math.min(this.x, pos.x) + Math.max(this.y, pos.y) - Math.min(this.y, pos.y);
+	public int travelCost(Position pos){
+		int minimumTurnCost = this.x != pos.x || this.y != pos.y ? 1 : 0;
+		return (Math.max(this.x, pos.x) - Math.min(this.x, pos.x)) + (Math.max(this.y, pos.y) - Math.min(this.y, pos.y)) + minimumTurnCost;
 	}
 }
