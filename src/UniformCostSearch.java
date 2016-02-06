@@ -39,7 +39,6 @@ public class UniformCostSearch implements SearchAlgorithm {
 		int maxFrontier = 0;
 		int numberOfExpansions = 0;
 		while(!frontier.isEmpty()){
-			numberOfExpansions++;
 			maxFrontier = frontier.size() > maxFrontier ? frontier.size() : maxFrontier;
 			UniNode curr_node = frontier.poll();
 			State curr_state = curr_node.state;
@@ -47,12 +46,13 @@ public class UniformCostSearch implements SearchAlgorithm {
 				System.out.println("Number of Expansions: " + numberOfExpansions + ", Max Frontier: " + maxFrontier);
 				return curr_node.getSolution();
 			}
-			if(explored.containsKey(curr_state))
-				continue;
-			explored.put(curr_state, curr_node);
-			for(String action : curr_node.state.legalActions()) {
-					UniNode childNode = new UniNode(curr_node.state.nextState(action), curr_node, action);
-					frontier.add(childNode);
+			if(!explored.containsKey(curr_state)){
+				explored.put(curr_state, curr_node);
+				for(String action : curr_node.state.legalActions()) {
+						UniNode childNode = new UniNode(curr_node.state.nextState(action), curr_node, action);
+						frontier.add(childNode);
+				}
+				numberOfExpansions++;
 			}
 		}
 		return failure();

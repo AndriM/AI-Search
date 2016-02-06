@@ -107,10 +107,6 @@ public class State {
 		return newState;
 	}
 	
-	public int getActionCost(String action) {
-		return 1; // Always one
-	}
-	
 	private Collection<Position> getNextStateDirt() {
 		List<Position> newDirt = new ArrayList<>();
 		for(Position dirt : this.dirt) {
@@ -128,5 +124,15 @@ public class State {
 			i++;
 		}
 		return array;
+	}
+	
+	public int getActionCost(String action) {
+		return 1; // Always one
+	}
+	
+	public int travelCost(Position pos1, Position pos2){
+		int minimumTurnCost = pos1.x != pos2.x || pos1.y != pos2.y ? getActionCost("TURN_LEFT") : 0;
+		int distance = ((Math.max(pos1.x, pos2.x) - Math.min(pos1.x, pos2.x)) + (Math.max(pos1.y, pos2.y) - Math.min(pos1.y, pos2.y))) * getActionCost("GO");
+		return distance + minimumTurnCost;
 	}
 }

@@ -35,9 +35,4 @@ public class Position {
 			newPos.x--;
 		return newPos;
 	}
-	
-	public int travelCost(Position pos){
-		int minimumTurnCost = this.x != pos.x || this.y != pos.y ? 1 : 0;
-		return (Math.max(this.x, pos.x) - Math.min(this.x, pos.x)) + (Math.max(this.y, pos.y) - Math.min(this.y, pos.y)) + minimumTurnCost;
-	}
 }
