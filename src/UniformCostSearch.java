@@ -52,7 +52,10 @@ public class UniformCostSearch implements SearchAlgorithm {
 		}
 		return failure();
 	}
-
+	
+	/*
+	 * returns the null stack and prints out failure to the standard output stream
+	 */
 	private Stack<String> failure() {
 		System.out.println("No solution found!");
 		return null;

@@ -10,6 +10,9 @@ public enum Orientation {
 		this.value = value;
 	}
 	
+	/**
+	 * returns the orientation on your left
+	 */
 	public Orientation left() {
 		if(this.value == 0)
 			return Orientation.WEST;
@@ -21,6 +24,9 @@ public enum Orientation {
 		return Orientation.SOUTH;
 	}
 	
+	/**
+	 * returns the orientation on your right
+	 */
 	public Orientation right() {
 		if(this.value == 0)
 			return Orientation.EAST;

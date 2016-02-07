@@ -13,8 +13,7 @@ public class BreadthFirstSearch implements SearchAlgorithm {
 		frontier.add(root);
 		int numberOfExpansions = 0;
 		int maximumSizeOfFrontier = 1;
-		while(true) {
-			if(frontier.isEmpty()) return failure();
+		while(!frontier.isEmpty()) {
 			maximumSizeOfFrontier = (frontier.size() > maximumSizeOfFrontier) ? frontier.size() : maximumSizeOfFrontier;
 			Node currentNode = frontier.pop();
 			explored.put(currentNode.state, currentNode.state);
@@ -23,15 +22,19 @@ public class BreadthFirstSearch implements SearchAlgorithm {
 				Node childNode = new Node(currentNode.state.nextState(action), currentNode, action);
 				if(!explored.containsKey(childNode.state) && !frontier.contains(childNode)) {
 					if(childNode.state.isGoal()) { 
-						System.out.println("NE: " + numberOfExpansions + " MS: " + maximumSizeOfFrontier);
+						System.out.println("Number of Expansions: " + numberOfExpansions + " Maximum Frontier: " + maximumSizeOfFrontier);
 						return childNode.getSolution();
 					}
 					frontier.add(childNode);
 				}
 			}
 		}
+		return failure();
 	}
 	
+	/*
+	 * returns the null stack and prints out failure to the standard output stream
+	 */
 	private Stack<String> failure() {
 		System.out.println("No solution found!");
 		return null;

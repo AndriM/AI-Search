@@ -7,25 +7,6 @@ public class AStarSearch implements SearchAlgorithm{
 	private class AStarNode extends Node{
 		private int f;
 		private int g;
-		
-		private class Edge implements Comparable<Edge> {
-			public int index1;
-			public int index2;
-			public int weight;
-			
-			public Edge(int index1, int index2, int weight) {
-				this.index1 = index1;
-				this.index2 = index2;
-				this.weight = weight;
-			}
-
-			@Override
-			public int compareTo(Edge e) {
-				if(this.weight != e.weight)
-					return this.weight < e.weight ? -1 : 1;
-				return 0;
-			}
-		}
 
 		public AStarNode(State state, AStarNode parentNode, String action) {
 			super(state, (AStarNode)parentNode, action);
@@ -43,6 +24,10 @@ public class AStarSearch implements SearchAlgorithm{
 			return 0;
 		}
 		
+		/**
+		 * returns the cost from the given position to the dirt farthest away + the cost from the farthest dirt to the home position
+		 * + the cost of sucking all the dirt
+		 */
 		private int heuristic() {
 			int h = state.dirt.size() * state.getActionCost("SUCK");
 			h += !state.turned_on && !state.dirt.isEmpty() ? state.getActionCost("TURN_ON") : 0;
@@ -94,6 +79,9 @@ public class AStarSearch implements SearchAlgorithm{
 		return failure();
 	}
 	
+	/*
+	 * returns the null stack and prints out failure to the standard output stream
+	 */
 	private Stack<String> failure() {
 		System.out.println("No solution found!");
 		return null;

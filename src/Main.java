@@ -9,7 +9,12 @@ public class Main {
 	public static void main(String[] args){
 		try{
 			// TODO: put in your agent here
-			Agent agent = new RationalAgent(new AStarSearch());
+			// To test different searching algorithms for the RationalAgent, pass to the construction one of the following class instances:
+			// BreadthFirstSearch
+			// DepthFirstSearch
+			// UniformCostSearch
+			// AStarSearch
+			Agent agent = new RationalAgent(new DepthFirstSearch());
 
 			int port=4001;
 			if(args.length>=1){

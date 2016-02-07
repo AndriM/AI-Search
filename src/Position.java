@@ -23,6 +23,9 @@ public class Position {
 		return (this.x * 2963)^(this.y * 2969);
 	}
 	
+	/**
+	 * returns the position after taking one step in a given direction
+	 */
 	public Position changePositionInDirection(Orientation orientation) {
 		Position newPos = new Position(this.x, this.y);
 		if(orientation == Orientation.NORTH)

@@ -14,8 +14,7 @@ public class DepthFirstSearch implements SearchAlgorithm {
 		this.root = new Node(initState, null, null);
 		if(root.state.isGoal()) return root.getSolution();
 		this.frontier.push(root);
-		while(true) {
-			if(frontier.isEmpty()) return failure();
+		while(!frontier.isEmpty()) {
 			Node currentNode = frontier.pop();
 			explored.put(currentNode.state, currentNode.state);
 			for(String action : currentNode.state.legalActions()) {
@@ -27,8 +26,12 @@ public class DepthFirstSearch implements SearchAlgorithm {
 				}
 			}
 		}
+		return failure();
 	}
 	
+	/*
+	 * returns the null stack and prints out failure to the standard output stream
+	 */
 	private Stack<String> failure() {
 		System.out.println("No solution found!");
 		return null;

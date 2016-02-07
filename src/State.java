@@ -49,16 +49,8 @@ public class State {
 		else if(orientation == Orientation.WEST) hash *= 109;
 		hash *= turned_on == true ? 7121 : 1;
 		
-		int i = 0;
-		for(Position d : dirt) {
-			if(i > 2) i = 0;
-			if(i == 0)
-			 hash *= d.hashCode();
-			else if(i == 1)
-				hash ^= d.hashCode();
-			else if(i == 2)
-				hash /= d.hashCode();
-		}
+		for(Position d : dirt)
+			hash *= d.hashCode();
 		
 		return hash;
 	}
@@ -67,13 +59,16 @@ public class State {
 		return (!turned_on && position.equals(world.homePosition) && dirt.isEmpty());
 	}
 	
+	/**
+	 * returns all actions that legal to take in this state
+	 */
 	public Collection<String> legalActions() {
 		List<String> actions = new ArrayList<>();
-		if(!turned_on)
+		if(!turned_on) // The only sensible action to take if the robot is not turned on is to TURN_ON
 			actions.add("TURN_ON");
-		else if(turned_on && position.equals(world.homePosition) && dirt.isEmpty())
+		else if(turned_on && position.equals(world.homePosition) && dirt.isEmpty()) // Only TURN_OFF if you are one step away from goal
 			actions.add("TURN_OFF");
-		else if(dirt.contains(position))
+		else if(dirt.contains(position)) // Only include SUCK if you are at a dirty tile
 			actions.add("SUCK");
 		else {
 			boolean isObstacleFront = world.isPositionObstacle(position.changePositionInDirection(orientation));
@@ -81,7 +76,7 @@ public class State {
 			boolean isObstacleRight = world.isPositionObstacle(position.changePositionInDirection(orientation.right()));
 			if(!isObstacleFront)
 				actions.add("GO");
-			if(!isObstacleLeft || isObstacleRight)
+			if(!isObstacleLeft || isObstacleRight) //Only TURN_LEFT if there is no obstacle left or if there is obstacle at the right
 				actions.add("TURN_LEFT");
 			if(!isObstacleRight || isObstacleLeft)
 				actions.add("TURN_RIGHT");
@@ -89,6 +84,9 @@ public class State {
 		return actions;
 	}
 	
+	/**
+	 * returns the successor state for a given action
+	 */
 	public State nextState(String action) {
 		State newState = new State(this);
 		if(action.equals("GO"))
@@ -107,6 +105,10 @@ public class State {
 		return newState;
 	}
 	
+	/**
+	 * returns a new collection of the dirts excluding the dirt that
+	 * is in the current position 
+	 */
 	private Collection<Position> getNextStateDirt() {
 		List<Position> newDirt = new ArrayList<>();
 		for(Position dirt : this.dirt) {
@@ -116,6 +118,9 @@ public class State {
 		return newDirt;
 	}
 	
+	/**
+	 * returns all the dirt in a array
+	 */
 	public Position[] getStateDirt() {
 		Position[] array = new Position[dirt.size()];
 		int i = 0;
@@ -124,10 +129,20 @@ public class State {
 		return array;
 	}
 	
+	/**
+	 * Returns the cost of a given action in the state 
+	 */
 	public int getActionCost(String action) {
-		return 1; // Always one
+		//We always return 1 since all action costs are equal except when it causes a punishment
+		//We have eliminated the chance that robot can perform an actions that cause
+		//punishment cost so we return 1
+		//This function should be implemented further if we want to have actions that do not have the same cost
+		return 1;
 	}
 	
+	/*
+	 * returns the minimum travel cost between two points
+	 */
 	public int travelCost(Position pos1, Position pos2){
 		int minimumTurnCost = pos1.x != pos2.x || pos1.y != pos2.y ? getActionCost("TURN_LEFT") : 0;
 		int distance = ((Math.max(pos1.x, pos2.x) - Math.min(pos1.x, pos2.x)) + (Math.max(pos1.y, pos2.y) - Math.min(pos1.y, pos2.y))) * getActionCost("GO");
