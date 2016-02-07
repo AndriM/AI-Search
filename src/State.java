@@ -119,10 +119,8 @@ public class State {
 	public Position[] getStateDirt() {
 		Position[] array = new Position[dirt.size()];
 		int i = 0;
-		for(Position d : dirt) {
-			array[i] = d;
-			i++;
-		}
+		for(Position d : dirt)
+			array[i++] = d;
 		return array;
 	}
 	

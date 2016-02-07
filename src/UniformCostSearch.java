@@ -10,12 +10,7 @@ public class UniformCostSearch implements SearchAlgorithm {
 		private int f;		
 		public UniNode(State state, UniNode parentNode, String action) {
 			super(state, parentNode, action);
-			if(parentNode != null) {
-				f = parentNode.f + 1;
-			}
-			else{
-				f = 0;
-			}
+			f = parentNode != null ? parentNode.f + state.getActionCost(action) : 0;
 		}
 		
 		@Override
